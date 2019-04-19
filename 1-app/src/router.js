@@ -28,6 +28,13 @@ export default new Router({
       path: "/login",
       name: "login",
       component: Login
+    },
+    {
+      path: "/test",
+      name: "other",
+      beforeEnter(to, from, netx){
+        window.location = "/test";
+      },
     }
   ]
 });
