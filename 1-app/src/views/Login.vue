@@ -54,8 +54,8 @@ export default {
   methods: {
     onSubmit() {
       console.log(this.form.name);
-      this.axios.post('/api/login', (req, res)=>{
-        console.log(req, res);
+      this.axios.post('/api/login').then((res)=>{
+        console.log(res);
       });
     }
   }
