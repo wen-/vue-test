@@ -1,22 +1,22 @@
 import axios from "axios";
 import router from "../router";
 import store from "../store";
-
-axios.defaults.timeout = 30000; // 超时
-// axios.defaults.baseURL = ''
-// axios.defaults.baseURL = 'http://47.97.209.44';
+import storage from "./storage";
 
 // 请求初始化配置
-
-axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8";
-axios.defaults.withCredentials = false; // cookie验证
+axios.defaults.timeout = 30000; // 超时
+axios.defaults.baseURL = "/api";
+// axios.defaults.baseURL = 'http://47.97.209.44';
+//axios.defaults.headers.post["Content-Type"] = "application/json;charset=utf-8";
+//axios.defaults.withCredentials = true;
 
 // 添加请求拦截器
 axios.interceptors.request.use(
   function(config) {
+    const userToken = storage.get("authToken");
     // 携带token
-    if (store.state.app.userToken) {
-      config.headers["Authorization"] = store.state.app.userToken;
+    if (userToken) {
+      config.headers["Authorization"] = userToken;
     }
     return config;
   },
@@ -31,7 +31,6 @@ axios.interceptors.response.use(
   function(response) {
     // 超时
     if (response.data.code === "000000") {
-      store.commit("logout");
       router.push({ name: "login" });
     }
     return response;
@@ -52,7 +51,6 @@ axios.interceptors.response.use(
           break;
         default:
           // 服务器其他异常
-          store.commit("setServiceError", true);
           if (typeof error.response.data !== "object") {
             error.response.data = {};
           }

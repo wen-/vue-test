@@ -25,11 +25,44 @@ module.exports = {
     }
   },
   devServer: {
-    historyApiFallback: {
-      rewrites: [
-        { from: /^\/$/, to: '/index.html' },
-        { from: /^\/test/, to: '/test.html' },
-      ]
-    }
+    host: "0.0.0.0", //本地服务器访问的路径
+    port: 8080, //本地服务器访问的端口
+    // proxy: {
+    //   '/api': {
+    //     target: 'http://xx.xx.xx.xx',//接口服务器
+    //     changeOrigin: true,
+    //     pathRewrite: {
+    //       '^/api': ''
+    //     }
+    //   }
+    // },
+    // historyApiFallback: {
+    //   rewrites: [
+    //     { from: /^\/$/, to: '/index.html' },
+    //     { from: /^\/test/, to: '/test.html' },
+    //   ]
+    // }
   }
+  // configureWebpack: {
+  //   devServer: {
+  //     host: "localhost", //本地服务器访问的路径
+  //     port: 8008, //本地服务器访问的端口
+  //     proxy: {
+  //       '/api': {
+  //         target: 'http://xx.xx.xx.xx',//接口服务器
+  //         changeOrigin: true,
+  //         pathRewrite: {
+  //           '^/api': ''
+  //         }
+  //       }
+  //     },
+  //     historyApiFallback: {
+  //       rewrites: [
+  //         { from: /^\/$/, to: '/index.html' },
+  //         { from: /^\/test/, to: '/test.html' },
+  //       ]
+  //     }
+  //   }
+  // },
+
 };

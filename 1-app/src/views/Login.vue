@@ -17,33 +17,43 @@
             ></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" round :loading="false" @click="onSubmit"
+            <el-button type="primary" round :loading="sending" @click="onSubmit"
               >登录</el-button
             >
           </el-form-item>
         </el-form>
       </el-row>
-      <p>{{testData}}</p>
     </div>
   </el-row>
 </template>
 
-<style scoped>
+<style>
+.login-page{
+  flex: 1;
+}
 .login-img {
   font-size: 100px;
   color: #409eff;
   margin: 100px 0 50px 92px;
 }
+.toast{
+  top: 50%;
+  min-width: 250px;
+}
 </style>
 
 <script>
+import { encrypt } from "../utils/crypto";
+import storage from "../utils/storage";
+
 export default {
   data() {
     return {
       form: {
         name: "",
         password: "",
-      }
+      },
+      sending: false,
     };
   },
   computed: {
@@ -54,8 +64,30 @@ export default {
   methods: {
     onSubmit() {
       console.log(this.form.name);
-      this.axios.post('/api/login').then((res)=>{
+      const { name, password } = this.form;
+      if(!name || !password){
+        return this.$message({
+          message: "请输入用户名或密码",
+          type: 'error',
+          customClass: "toast",
+        });
+      }
+      this.sending = true;
+      const params = {
+        name,
+        password: encrypt(password)
+      };
+
+      this.axios.post('/login', params).then((res)=>{
         console.log(res);
+        this.sending = false;
+        const {code, data, message} = res.data;
+        if(code == 200 && data){
+          storage.set("authToken", 'Bearer '+data.authorization);
+          this.$router.push({name: "homeIndex"});
+        }else{
+          this.$message.error(message);
+        }
       });
     }
   }

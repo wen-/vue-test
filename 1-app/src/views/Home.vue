@@ -56,6 +56,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border: none;
+}
+.el-menu-item.is-active{
+  border: none;
 }
 .el-menu-item .icon{
   margin: 0;

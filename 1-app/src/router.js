@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import storage from "./utils/storage";
 import Home from "./views/Home.vue";
 import HomeIndex from "./views/HomeIndex.vue";
 import HomeDiscover from "./views/HomeDiscover.vue";
@@ -9,8 +10,8 @@ import Login from "./views/Login.vue";
 
 Vue.use(Router);
 
-export default new Router({
-  mode: "history",
+const router = new Router({
+  mode: "hash",
   base: process.env.BASE_URL,
   routes: [
     {
@@ -38,7 +39,7 @@ export default new Router({
           path: "user",
           name: "homeUser",
           component: HomeUser
-        },
+        }
       ]
     },
     {
@@ -58,9 +59,28 @@ export default new Router({
     {
       path: "/test",
       name: "other",
-      beforeEnter(to, from, netx){
+      beforeEnter(to, from, netx) {
         window.location = "/test";
-      },
+      }
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  console.log("to:", to, "\nfrom:", from);
+
+  const token = storage.get("authToken");
+  if (!token && !["login", "reg", "passworld"].includes(to.name)) {
+    next({
+      name: "login"
+    });
+  } else if (token && ["login", "reg", "passworld"].includes(to.name)) {
+    next({
+      name: "homeIndex"
+    });
+  } else {
+    next();
+  }
+});
+
+export default router;

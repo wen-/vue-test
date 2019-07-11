@@ -4,7 +4,8 @@ import "element-ui/lib/theme-chalk/index.css";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import axios from "axios";
+import axios from "./utils/request";
+//import axios from "axios";
 import "./registerServiceWorker";
 
 import "./mock";
