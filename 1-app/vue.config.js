@@ -1,4 +1,5 @@
 module.exports = {
+  //vue-cli3之后其实不用怎么配置了，详细可查看node-module/@vue/cli-service/lib/config/app.js及其它配置，build时会抽离样式及脚本，业务脚本：app.***.js，第三方类库：chunk-vendors.***.js，动态加载脚本：chunk-***.js,重复使用的脚本：chunk-common.***.js ，业务样式：app.***.js，第三方类库样式：chunk-vendors.***.js 。
   //publicPath: "/vue/",
   pages: {
     index: {
@@ -44,6 +45,11 @@ module.exports = {
     // }
   }
   // configureWebpack: {
+  //     plugins: [],
+  //     externals: {//外置脚本
+  //       'vue': 'Vue',
+  //       'scrollmagic': 'ScrollMagic',
+  //     },
   //   devServer: {
   //     host: "localhost", //本地服务器访问的路径
   //     port: 8008, //本地服务器访问的端口
